@@ -3,3 +3,6 @@ image:
   repository: jamshidk/odoo
   tag: "17.0-oca-accounting-1"
   digest: ""
+
+odooEmail: admin
+odooPassword: admin
