@@ -1,0 +1,48 @@
+persistence:
+
+  enabled: true
+
+  resourcePolicy: ""
+  ## @param persistence.storageClass Persistent Volume storage class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner
+  ##
+  storageClass: "standard-rwo"
+  ## @param persistence.accessModes [array] Persistent Volume access modes
+  ##
+  accessModes:
+    - ReadWriteOnce
+  ## @param persistence.accessMode Persistent Volume access mode (DEPRECATED: use `persistence.accessModes` instead)
+  ##
+  accessMode: ReadWriteOnce
+  ## @param persistence.size Persistent Volume size
+  ##
+  size: 10Gi
+  ## @param persistence.dataSource Custom PVC data source
+  ##
+  dataSource: {}
+  ## @param persistence.annotations Annotations for the PVC
+  ##
+  annotations: {}
+  ## @param persistence.selector Selector to match an existing Persistent Volume (this value is evaluated as a template)
+  # selector:
+  #   matchLabels:
+  #     app: my-app
+  ##
+  # selector: {}
+  ## @param persistence.existingClaim The name of an existing PVC to use for persistence
+  ##
+  existingClaim: ""
+## 'volumePermissions' init container parameters
+## Changes the owner and group of the persistent volume mount point to runAsUser:fsGroup values
+##   based on the podSecurityContext/containerSecurityContext parameters
+##
+postgresql:
+  primary:
+    persistence:
+      enabled: true
+      storageClass: "standard-rwo" # Specify your custom StorageClass
+      size: 10Gi                         # Customize the storage size
+      accessModes:
+        - ReadWriteOnce
