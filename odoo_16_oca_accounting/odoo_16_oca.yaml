@@ -22,8 +22,6 @@ initContainers:
         value: https://github.com/OCA/account-financial-tools.git
       - name: OCA_ACCOUNT_REPORTS
         value: https://github.com/OCA/account-financial-reporting.git
-      - name: GITHUB_SABARI
-        value: https://token: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@github.com/sabariULT/extra_addons.git
       - name: OCA_REPORT_XLSX
         value: https://github.com/OCA/reporting-engine.git
       - name: OCA_SERVER_UX
