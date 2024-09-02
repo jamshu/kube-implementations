@@ -1,100 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-
-    Copyright (c) 2017-today MuK IT GmbH.
-
-    This file is part of MuK Backend Theme
-    (see https://mukit.at).
-
-    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
-    
--->
-
 <odoo>
 
-	<record id="res_config_settings_view_form" model="ir.ui.view">
-	    <field name="name">res.config.settings.view.form</field>
+	<record id="view_res_config_settings_appsbar_form" model="ir.ui.view">
+	    <field name="name">res.config.settings.form</field>
 	    <field name="model">res.config.settings</field>
-	    <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+	    <field name="inherit_id" ref="muk_web_appsbar.view_res_config_settings_form"/>
 	    <field name="arch" type="xml">
-	        <div id="companies" position="after">
-	            <h2 id="web_theme_title">Backend Theme</h2>
-	            <div class="row mt16 o_settings_container" name="web_theme">
-	                <div class="col-12 col-lg-6 o_setting_box">
-	                    <div class="o_setting_right_pane">
-	                        <span class="o_form_label">Theme Colors</span>
-                            <div class="text-muted">
-                                Set the main theme colors
-                            </div>
-                            <div class="content-group">
-                                <div class="mt16 row">
-                                	<label for="theme_color_brand" string="Brand" class="col-3 o_light_label"/>
-                            		<field name="theme_color_brand" class="d-block w-25 p-0 m-0" widget="color"/>
-                                    <div class="w-100 mt-1"></div>
-                                	<label for="theme_color_primary" string="Primary" class="col-3 o_light_label"/>
-                            		<field name="theme_color_primary" class="d-block w-25 p-0 m-0" widget="color"/>
-                                </div>
-                                <button 
-	                                name="action_reset_theme_assets" 
-	                                icon="fa-arrow-right" 
-	                                type="object" 
-	                                string="Reset Colors" 
-	                                class="btn-link"
-                                />
-                            </div>
+	    	<xpath expr="//field[@name='appbar_image']/../.." position="attributes">
+	    		<attribute name="invisible">1</attribute>
+	    	</xpath>
+	    </field>
+	</record>
+
+	<record id="view_res_config_settings_colors_form" model="ir.ui.view">
+	    <field name="name">res.config.settings.form</field>
+	    <field name="model">res.config.settings</field>
+	    <field name="inherit_id" ref="muk_web_colors.view_res_config_settings_form"/>
+	    <field name="arch" type="xml">
+	    	<xpath expr="//block[@id='branding_settings']" position="attributes">
+	    		<attribute name="invisible">1</attribute>
+	    	</xpath>
+	    	<xpath expr="//block[@id='branding_settings']" position="after">
+	    		<block title="Backend Theme" id="theme_settings">
+	    			<setting string="Theme Colors" help="Customize the look and feel of the theme">
+                     	<div class="w-50 row">
+                            <label for="color_brand_light" string="Brand" class="d-block w-75 py-2"/>
+                            <field name="color_brand_light" class="d-block w-25 p-0 m-0" widget="color"/>
+                        </div>
+                     	<div class="w-50 row">
+                            <label for="color_primary_light" string="Primary" class="d-block w-75 py-2"/>
+                            <field name="color_primary_light" class="d-block w-25 p-0 m-0" widget="color"/>
+                        </div>
+                     	<div class="w-50 row">
+                            <label for="theme_color_appsmenu_text" string="Menu Text" class="d-block w-75 py-2"/>
+                            <field name="theme_color_appsmenu_text" class="d-block w-25 p-0 m-0" widget="color"/>
+                        </div>
+                     	<div class="w-50 row">
+                            <label for="theme_color_appbar_text" string="Apps Text" class="d-block w-75 py-2"/>
+                            <field name="theme_color_appbar_text" class="d-block w-25 p-0 m-0" widget="color"/>
+                        </div>
+                     	<div class="w-50 row">
+                            <label for="theme_color_appbar_active" string="Apps Active" class="d-block w-75 py-2"/>
+                            <field name="theme_color_appbar_active" class="d-block w-25 p-0 m-0" widget="color"/>
+                        </div>
+                     	<div class="w-50 row">
+                            <label for="theme_color_appbar_background" string="Background" class="d-block w-75 py-2"/>
+                            <field name="theme_color_appbar_background" class="d-block w-25 p-0 m-0" widget="color"/>
+                        </div>
+                    </setting>
+	    			<setting string="Context Colors" help="Customize context colors of the system">
+                     	<div class="w-50 row">
+                            <label for="color_info_light" string="Info" class="d-block w-75 py-2"/>
+                            <field name="color_info_light" class="d-block w-25 p-0 m-0" widget="color"/>
+                        </div>
+                     	<div class="w-50 row">
+                            <label for="color_success_light" string="Success" class="d-block w-75 py-2"/>
+                            <field name="color_success_light" class="d-block w-25 p-0 m-0" widget="color"/>
+                        </div>
+                     	<div class="w-50 row">
+                            <label for="color_warning_light" string="Warning" class="d-block w-75 py-2"/>
+                            <field name="color_warning_light" class="d-block w-25 p-0 m-0" widget="color"/>
+                        </div>
+                     	<div class="w-50 row">
+                            <label for="color_danger_light" string="Danger" class="d-block w-75 py-2"/>
+                            <field name="color_danger_light" class="d-block w-25 p-0 m-0" widget="color"/>
+                        </div>                        
+                        <button 
+                            name="action_reset_theme_color_assets" 
+                            icon="oi-arrow-right" 
+                            type="object" 
+                            string="Reset Theme Colors" 
+                            class="btn-link"
+                        />
+                    </setting>
+	    			<setting 
+	    				string="Background Image" 
+	    				company_dependent="1" 
+	    				help="Set the background image for the apps menu"
+	    			>
+	    				<field name="theme_background_image" widget="image" class="ml-4 w-75"/>
+                    </setting>
+                    <setting 
+                    	string="Favicon &amp; Logo" 
+                    	company_dependent="1" 
+                    	help="Set your own favicon and logo for the appsbar"
+                    >
+		    			<div class="w-50 row">
+	                    	<label for="appbar_image" string="Logo" class="o_light_label mb-1"/>
+	                        <field name="appbar_image" widget="image" class="ml-4 oe_avatar"/>
+	                        <div class="w-100 mt-1"/>
+	                    	<label for="theme_favicon" string="Favicon" class="o_light_label mb-1"/>
+	                        <field name="theme_favicon" widget="image" class="ml-4 oe_avatar"/>
 	                    </div>
-	                </div>
-	                <div class="col-12 col-lg-6 o_setting_box">
-	                    <div class="o_setting_right_pane">
-	                        <span class="o_form_label">Menu Colors</span>
-                            <div class="text-muted">
-                                Set the main menu colors
-                            </div>
-                            <div class="content-group">
-                                <div class="mt16 row">
-                                	<label for="theme_color_appbar_color" string="Menu Color" class="col-3 o_light_label"/>
-                            		<field name="theme_color_appbar_color" class="d-block w-25 p-0 m-0" widget="color"/>
-                                    <div class="w-100 mt-1"></div>
-                                	<label for="theme_color_appbar_background" string="Background" class="col-3 o_light_label"/>
-                            		<field name="theme_color_appbar_background" class="d-block w-25 p-0 m-0" widget="color"/>
-                                    <div class="w-100 mt-1"></div>
-                                	<label for="theme_color_menu" string="Apps Color" class="col-3 o_light_label"/>
-                            		<field name="theme_color_menu" class="d-block w-25 p-0 m-0" widget="color"/>
-                                </div>
-                            </div>
-	                    </div>
-	                </div>
-	                <div class="col-12 col-lg-6 o_setting_box">
-	                    <div class="o_setting_right_pane">
-	                        <span class="o_form_label">Background Image</span>
-                            <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." aria-label="Values set here are company-specific." groups="base.group_multi_company" role="img"/>
-                            <div class="text-muted">
-                                Set the background image for the apps menu
-                            </div>
-                            <div class="content-group">
-                                <div class="mt16 row">
-                                    <field name="theme_background_image" widget="image" class="ml-4 w-75"/>
-                                </div>
-                            </div>
-	                    </div>
-	                </div>
-	                <div class="col-12 col-lg-6 o_setting_box">
-	                    <div class="o_setting_right_pane">
-	                        <span class="o_form_label">Favicon</span>
-                            <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." aria-label="Values set here are company-specific." groups="base.group_multi_company" role="img"/>
-                            <div class="text-muted">
-                                Set the favicon for the system
-                            </div>
-                            <div class="content-group">
-                                <div class="mt16 row">
-                                    <field name="theme_favicon" widget="image" class="ml-4 oe_avatar"/>
-                                </div>
-                            </div>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
+	                </setting>
+	    		</block>
+	    	</xpath>
 	    </field>
 	</record>
 	

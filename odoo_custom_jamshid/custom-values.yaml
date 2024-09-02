@@ -1,0 +1,5 @@
+image:
+  registry: docker.io
+  repository: jamshidk/odoo
+  tag: "17.0"
+  digest: ""

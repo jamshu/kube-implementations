@@ -1,22 +1,21 @@
-###################################################################################
-#
-#    Copyright (c) 2017-today MuK IT GmbH.
-#
-#    This file is part of MuK Backend Theme
-#    (see https://mukit.at).
-#
-#    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
-#
-###################################################################################
-
 from . import models
 
-from odoo import api, SUPERUSER_ID
+import base64
+
+from odoo.tools import file_open
 
 
-def _uninstall_cleanup(cr, registry):
-    env = api.Environment(cr, SUPERUSER_ID, {})
-    env['web_editor.assets'].reset_asset(
-        '/muk_web_theme/static/src/colors.scss', 
-        'web._assets_primary_variables'
-    )
+def _setup_module(env):
+    if env.ref('base.main_company', False): 
+        with file_open('web/static/img/favicon.ico', 'rb') as file:
+            env.ref('base.main_company').write({
+                'favicon': base64.b64encode(file.read())
+            })
+        with file_open('muk_web_theme/static/src/img/background.png', 'rb') as file:
+            env.ref('base.main_company').write({
+                'background_image': base64.b64encode(file.read())
+            })
+
+
+def _uninstall_cleanup(env):
+    env['res.config.settings']._reset_theme_color_assets()

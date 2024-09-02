@@ -1,11 +1,11 @@
-=============
-MuK Web Theme
-=============
+=================
+MuK Backend Theme
+=================
 
-This module offers a mobile compatible design for Odoo Community. Furthermore
-it allows the user to define some design preferences. So he can choose the
-size of the sidebar and the position of the chatter. In addition, the background
-image of the app menu can be set for each company.
+This module offers a mobile compatible design for Odoo Community. Furthermore it 
+allows the user to define some design preferences. Each user can choose the size 
+of the sidebar. In addition, the background image of the app menu can be set 
+for each company.
 
 Installation
 ============
@@ -29,7 +29,8 @@ clicking on the upgrade button.
 Configuration
 =============
 
-No additional configuration is needed to use this module.
+To further customize the theme several settings are available in the general
+settings page.
 
 Usage
 =============
@@ -43,22 +44,6 @@ Contributors
 ------------
 
 * Mathias Markl <mathias.markl@mukit.at>
-
-Images
-------------
-
-Some pictures are based on or inspired by:
-
-* `Freepik <https://www.flaticon.com/authors/freepik>`_
-
-Projects
-------------
-
-Parts of the module are inspired by:
-
-* `Web Responsive <https://github.com/OCA/web>`_
-* `List Range Selection <https://github.com/OCA/web>`_
-* `Openworx Backend Theme <https://github.com/Openworx/backend_theme>`_
 
 Author & Maintainer
 -------------------

@@ -1,18 +1,3 @@
-###################################################################################
-#
-#    Copyright (c) 2017-today MuK IT GmbH.
-#
-#    This file is part of MuK Backend Theme
-#    (see https://mukit.at).
-#
-#    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
-#
-###################################################################################
-
-import re
-import uuid
-import base64
-
 from odoo import api, fields, models
 
 
@@ -20,6 +5,23 @@ class ResConfigSettings(models.TransientModel):
 
     _inherit = 'res.config.settings'
 
+    @property
+    def THEME_COLOR_FIELDS(self):
+        return [
+            'color_appsmenu_text',
+            'color_appbar_text',
+            'color_appbar_active',
+            'color_appbar_background',
+        ]
+
+    @property
+    def COLOR_ASSET_THEME_URL(self):
+        return '/muk_web_theme/static/src/scss/colors.scss'
+        
+    @property
+    def COLOR_BUNDLE_THEME_NAME(self):
+        return 'web._assets_primary_variables'
+    
     #----------------------------------------------------------
     # Fields
     #----------------------------------------------------------
@@ -34,34 +36,74 @@ class ResConfigSettings(models.TransientModel):
         readonly=False
     )
     
-    theme_color_brand = fields.Char(
-        string='Theme Brand Color'
+    theme_color_appsmenu_text = fields.Char(
+        string='Apps Menu Text Color'
     )
     
-    theme_color_primary = fields.Char(
-        string='Theme Primary Color'
+    theme_color_appbar_text = fields.Char(
+        string='AppsBar Text Color'
     )
     
-    theme_color_menu = fields.Char(
-        string='Theme Menu Color'
-    )
-    
-    theme_color_appbar_color = fields.Char(
-        string='Theme AppBar Color'
+    theme_color_appbar_active = fields.Char(
+        string='AppsBar Active Color'
     )
     
     theme_color_appbar_background = fields.Char(
-        string='Theme AppBar Background'
+        string='AppsBar Background Color'
     )
+    
+    #----------------------------------------------------------
+    # Helper
+    #----------------------------------------------------------
+    
+    def _get_theme_color_values(self):
+        return self.env['web_editor.assets'].get_color_variables_values(
+            self.COLOR_ASSET_THEME_URL, 
+            self.COLOR_BUNDLE_THEME_NAME,
+            self.THEME_COLOR_FIELDS
+        )
+        
+    def _set_theme_color_values(self, values):
+        colors = self._get_theme_color_values()
+        for var, value in colors.items():
+            values[f'theme_{var}'] = value
+        return values
+
+    def _detect_theme_color_change(self):
+        colors = self._get_theme_color_values()
+        return any(
+            self[f'theme_{var}'] != val
+            for var, val in colors.items()
+        )
+
+    def _replace_theme_color_values(self):
+        variables = [
+            {
+                'name': field, 
+                'value': self[f'theme_{field}']
+            }
+            for field in self.THEME_COLOR_FIELDS
+        ]
+        return self.env['web_editor.assets'].replace_color_variables_values(
+            self.COLOR_ASSET_THEME_URL, 
+            self.COLOR_BUNDLE_THEME_NAME,
+            variables
+        )
+
+    def _reset_theme_color_assets(self):
+        self.env['web_editor.assets'].reset_asset(
+            self.COLOR_ASSET_THEME_URL, 
+            self.COLOR_BUNDLE_THEME_NAME,
+        )
     
     #----------------------------------------------------------
     # Action
     #----------------------------------------------------------
     
-    def action_reset_theme_assets(self):
-        self.env['web_editor.assets'].reset_asset(
-            '/muk_web_theme/static/src/colors.scss', 'web._assets_primary_variables',
-        )
+    def action_reset_theme_color_assets(self):
+        self._reset_light_color_assets()
+        self._reset_dark_color_assets()
+        self._reset_theme_color_assets()
         return {
             'type': 'ir.actions.client',
             'tag': 'reload',
@@ -71,55 +113,13 @@ class ResConfigSettings(models.TransientModel):
     # Functions
     #----------------------------------------------------------
 
-    def set_values(self):
-        res = super(ResConfigSettings, self).set_values()
-        variables = [
-            'o-brand-odoo',
-            'o-brand-primary',
-            'mk-menu-color',
-            'mk-appbar-color',
-            'mk-appbar-background',
-        ]
-        colors = self.env['web_editor.assets'].get_theme_variables_values(
-            '/muk_web_theme/static/src/colors.scss', 'web._assets_primary_variables', variables
-        )
-        colors_changed = []
-        colors_changed.append(self.theme_color_brand != colors['o-brand-odoo'])
-        colors_changed.append(self.theme_color_primary != colors['o-brand-primary'])
-        colors_changed.append(self.theme_color_menu != colors['mk-menu-color'])
-        colors_changed.append(self.theme_color_appbar_color != colors['mk-appbar-color'])
-        colors_changed.append(self.theme_color_appbar_background != colors['mk-appbar-background'])
-        if(any(colors_changed)):
-            variables = [
-                {'name': 'o-brand-odoo', 'value': self.theme_color_brand or "#243742"},
-                {'name': 'o-brand-primary', 'value': self.theme_color_primary or "#5D8DA8"},
-                {'name': 'mk-menu-color', 'value': self.theme_color_menu or "#f8f9fa"},
-                {'name': 'mk-appbar-color', 'value': self.theme_color_appbar_color or "#dee2e6"},
-                {'name': 'mk-appbar-background', 'value': self.theme_color_appbar_background or "#000000"},
-            ]
-            self.env['web_editor.assets'].replace_theme_variables_values(
-                '/muk_web_theme/static/src/colors.scss', 'web._assets_primary_variables', variables
-            )
+    def get_values(self):
+        res = super().get_values()
+        res = self._set_theme_color_values(res)
         return res
 
-    @api.model
-    def get_values(self):
-        res = super(ResConfigSettings, self).get_values()
-        variables = [
-            'o-brand-odoo',
-            'o-brand-primary',
-            'mk-menu-color',
-            'mk-appbar-color',
-            'mk-appbar-background',
-        ]
-        colors = self.env['web_editor.assets'].get_theme_variables_values(
-            '/muk_web_theme/static/src/colors.scss', 'web._assets_primary_variables', variables
-        )
-        res.update({
-            'theme_color_brand': colors['o-brand-odoo'],
-            'theme_color_primary': colors['o-brand-primary'],
-            'theme_color_menu': colors['mk-menu-color'],
-            'theme_color_appbar_color': colors['mk-appbar-color'],
-            'theme_color_appbar_background': colors['mk-appbar-background'],
-        })
+    def set_values(self):
+        res = super().set_values()
+        if self._detect_theme_color_change():
+            self._replace_theme_color_values()
         return res
