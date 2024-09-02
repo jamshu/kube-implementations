@@ -1,3 +1,6 @@
+image:
+  tag: 16.0
+  debug: true
 odooEmail: admin
 odooPassword: admin
 initContainers:
