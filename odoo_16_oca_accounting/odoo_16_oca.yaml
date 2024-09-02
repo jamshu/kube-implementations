@@ -1,0 +1,66 @@
+odooEmail: admin
+odooPassword: admin
+initContainers:
+  - name: git-cloner
+    image: bitnami/git:2.43.0-debian-11-r0
+    imagePullPolicy: Always
+    env:
+      - name: GIT_ADDONS_BRANCH
+        value: "16.0"
+      - name: GIT_OCA_FS
+        value: https://github.com/OCA/field-service.git
+      - name: OCA_BANK_STAT_IMPORT
+        value: https://github.com/OCA/bank-statement-import.git
+      - name: OCA_MIS
+        value: https://github.com/OCA/mis-builder.git
+      - name: OCA_MIS_BUILDER
+        value: https://github.com/OCA/mis-builder-contrib.git
+      - name: OCA_ACCOUNT_AND_FINANCE
+        value: https://github.com/OCA/account-financial-tools.git
+      - name: OCA_ACCOUNT_REPORTS
+        value: https://github.com/OCA/account-financial-reporting.git
+      - name: GITHUB_SABARI
+        value: https://token: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@github.com/sabariULT/extra_addons.git
+      - name: OCA_REPORT_XLSX
+        value: https://github.com/OCA/reporting-engine.git
+      - name: OCA_SERVER_UX
+        value: https://github.com/OCA/server-ux.git
+      - name: OCA_ACCOUNT_RECONCILE
+        value: https://github.com/OCA/account-reconcile.git
+      - name: OCA_ACCOUNT_BUDGET
+        value: https://github.com/OCA/account-budgeting.git
+    command:
+      - /bin/bash
+    args:
+      - -c
+      - |
+        git clone $GIT_OCA_FS --depth 1 -b $GIT_ADDONS_BRANCH addons_opu_fs
+        git clone $OCA_BANK_STAT_IMPORT --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_bank_stat_import
+        git clone $OCA_MIS --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_mis_builder
+        git clone $OCA_MIS_BUILDER --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_mis
+        git clone $OCA_ACCOUNT_AND_FINANCE --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_finance
+        git clone $OCA_ACCOUNT_REPORTS --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_reports
+        git clone $GITHUB_SABARI --depth 1 -b $GIT_ADDONS_BRANCH addons_github_sabari
+        git clone $OCA_SERVER_UX --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_server_ux
+        git clone $OCA_REPORT_XLSX --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_report_xlsx
+        git clone $OCA_ACCOUNT_RECONCILE --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_account_reconcile
+        git clone $OCA_ACCOUNT_BUDGET --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_account_budget
+        echo "OCA Field Service Clone completed"
+        echo "Cleaning existing addons...."
+        rm -rf /odoo-data/addons/*
+        echo "Updating latest addons...."
+        mv addons_github_sabari/* /odoo-data/addons/
+        mv addons_oca_server_ux/* /odoo-data/addons/
+        mv addons_oca_bank_stat_import/* /odoo-data/addons/
+        mv addons_oca_mis/* /odoo-data/addons/
+        mv addons_oca_mis_builder/* /odoo-data/addons/
+        mv addons_oca_report_xlsx/* /odoo-data/addons/
+        mv addons_oca_finance/* /odoo-data/addons/
+        mv addons_oca_reports/* /odoo-data/addons/
+        mv addons_opu_fs/* /odoo-data/addons/
+        mv addons_oca_account_reconcile/* /odoo-data/addons/
+        mv addons_oca_account_budget/* /odoo-data/addons/
+        echo "ALL Clone procedure completed successfully"
+    volumeMounts:
+      - mountPath: "/odoo-data"
+        name: odoo-data
