@@ -1,5 +1,5 @@
 image:
   registry: docker.io
   repository: jamshidk/odoo
-  tag: "17.0"
+  tag: "17.0-oca-accounting-1"
   digest: ""
