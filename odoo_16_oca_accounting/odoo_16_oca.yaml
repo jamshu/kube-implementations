@@ -41,16 +41,14 @@ initContainers:
         git clone $OCA_MIS_BUILDER --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_mis
         git clone $OCA_ACCOUNT_AND_FINANCE --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_finance
         git clone $OCA_ACCOUNT_REPORTS --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_reports
-        git clone $GITHUB_SABARI --depth 1 -b $GIT_ADDONS_BRANCH addons_github_sabari
         git clone $OCA_SERVER_UX --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_server_ux
         git clone $OCA_REPORT_XLSX --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_report_xlsx
         git clone $OCA_ACCOUNT_RECONCILE --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_account_reconcile
         git clone $OCA_ACCOUNT_BUDGET --depth 1 -b $GIT_ADDONS_BRANCH addons_oca_account_budget
         echo "OCA Field Service Clone completed"
-        echo "Cleaning existing addons...."
+        echo "Creating directory...."
         rm -rf /odoo-data/addons/*
         echo "Updating latest addons...."
-        mv addons_github_sabari/* /odoo-data/addons/
         mv addons_oca_server_ux/* /odoo-data/addons/
         mv addons_oca_bank_stat_import/* /odoo-data/addons/
         mv addons_oca_mis/* /odoo-data/addons/

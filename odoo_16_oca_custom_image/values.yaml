@@ -1,0 +1,8 @@
+image:
+  registry: docker.io
+  repository: jamshidk/odoo
+  tag: "16.0-oca-accounting"
+  digest: ""
+
+odooEmail: admin
+odooPassword: admin
