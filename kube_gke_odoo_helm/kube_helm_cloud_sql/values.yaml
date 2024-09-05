@@ -1,0 +1,45 @@
+persistence:
+  enabled: true
+  storageClass: "filestore-csi"  # Replace with your StorageClass name
+  accessModes:
+    - ReadWriteMany
+  size: 10Gi
+
+
+postgresql:
+  enabled: false
+  
+externalDatabase:
+  host: "34.131.192.108"
+  port: 5432
+  user: odoo
+  password: "odooadmin"
+  database: bitnami_odoo
+  create: true
+  postgresqlPostgresUser: "postgres"
+  postgresqlPostgresPassword: "postgresadmin"
+  existingSecret: ""
+  existingSecretPasswordKey: ""
+  existingSecretPostgresPasswordKey: ""
+
+# Autoscaling Configuration
+replicaCount: 1  # Initial replica count
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPU: 50
+  targetMemory: 50
+
+# Resources Requests and Limits
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+extraEnv:
+  - name: ODOO_SKIP_BOOTSTRAP
+    value: "yes"
