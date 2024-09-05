@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: odoo-restore
+spec:
+  template:
+    spec:
+      containers:
+      - name: restore-container
+        image: jamshidk/odoo-backup-restore:16.3
+        volumeMounts:
+        - name: odoo-data
+          mountPath: /bitnami/odoo
+        - name: pgdata
+          mountPath: /bitnami/postgresql
+        command: ["/bin/bash", "-c", "/usr/local/bin/restore.sh"]
+      restartPolicy: OnFailure
+      volumes:
+      - name: odoo-data
+        persistentVolumeClaim:
+          claimName: odoo-16-oca
+      - name: pgdata
+        persistentVolumeClaim:
+          claimName: data-odoo-16-oca-postgresql-0
+      
