@@ -6,3 +6,12 @@ image:
 
 odooEmail: admin
 odooPassword: admin
+
+postgresql:
+  enabled: true
+  auth:
+    username: bn_odoo
+    password: "bn_odoo_password"
+    database: bitnami_odoo
+    existingSecret: ""
+  

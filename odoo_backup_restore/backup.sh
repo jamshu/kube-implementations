@@ -2,11 +2,9 @@
 
 # Variables
 BACKUP_DIR="/backup"
-DATE=$(date +%Y%m%d_%H%M%S)
 ODOO_POD=$(kubectl get pods -l app.kubernetes.io/name=odoo -o jsonpath="{.items[0].metadata.name}")
 POSTGRES_POD=$(kubectl get pods -l app.kubernetes.io/name=postgresql -o jsonpath="{.items[0].metadata.name}")
 POSTGRES_USER="bn_odoo"
-POSTGRES_PASSWORD="JpatPpPJlM"
 POSTGRES_DB="bitnami_odoo"
 
 
