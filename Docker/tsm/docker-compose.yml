@@ -1,0 +1,22 @@
+version: '3.3'
+services:
+  odoo-v16-tsm:
+    image: cfed-tsm:16.0
+    network_mode: host
+    volumes:
+      - './odoo:/bitnami/odoo'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=no
+      - BITNAMI_DEBUG=true
+      - ODOO_DATABASE_HOST=localhost
+      - ODOO_DATABASE_USER=odoo16
+      - ODOO_DATABASE_PASSWORD=odoo
+      - ODOO_DATABASE_NAME=bitnami_odoo
+      - ODOO_EMAIL=admin
+      - ODOO_PASSWORD=admin
+      - ODOO_PORT_NUMBER=8069
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: '8g'
