@@ -1,0 +1,12 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: filestore-csi
+provisioner: filestore.csi.storage.gke.io
+parameters:
+  tier: standard  # You can use different tiers like "enterprise", "premium"
+  network: "default"  # Specify the VPC network
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+
