@@ -1,0 +1,23 @@
+version: '3.3'
+services:
+  odoo-v16-ib:
+    image: jamshidk/odoo:16.0-oca-accounting
+    network_mode: host
+    volumes:
+      - './odoo:/bitnami/odoo'
+    environment:
+      - PGSSLCERT=/tmp/postgresql.crt
+      - ALLOW_EMPTY_PASSWORD=no
+      - BITNAMI_DEBUG=true
+      - ODOO_DATABASE_HOST=odoo-postgresql.c0nklmunutqw.ap-southeast-1.rds.amazonaws.com
+      - ODOO_DATABASE_USER=bn_odoo
+      - ODOO_DATABASE_PASSWORD=bn_odoo_x_pass
+      - ODOO_DATABASE_NAME=bitnami_odoo
+      - ODOO_EMAIL=admin
+      - ODOO_PASSWORD=admin
+      - ODOO_PORT_NUMBER=8069
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: '8g'
